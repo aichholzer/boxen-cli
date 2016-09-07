@@ -3,7 +3,6 @@
 const meow = require('meow');
 const getStdin = require('get-stdin');
 const boxen = require('boxen');
-const indentString = require('indent-string');
 
 const cli = meow(`
 	Usage
@@ -18,8 +17,7 @@ const cli = meow(`
 	  --dim-border        Reduce opacity of border
 	  --padding           Space between the text and box border
 	  --margin            Space around the box
-	  --center            Center the box
-	  --right			  Align the box to the right
+	  --float             Align the box on the screen [left|center|right] (Default: left)
 	  --align             Align the text [left|center|right] (Default: left)
 
 	Examples
@@ -85,26 +83,10 @@ function parseMargin(opts) {
 	return opts.margin;
 }
 
-function calculateBoxLength(box, opts) {
-	const lineNumber = opts.margin ? opts.margin.top || opts.margin : 0;
-	return box.split('\n')[lineNumber].length;
-}
-
 function init(data) {
 	cli.flags.borderStyle = cleanupBorderStyle(cli.flags.borderStyle);
 	cli.flags.margin = parseMargin(cli.flags);
-	let box = boxen(data, cli.flags);
-
-	let boxLength;
-	if (cli.flags.center) {
-		boxLength = calculateBoxLength(box, cli.flags);
-		box = indentString(box, (process.stdout.columns - boxLength) / 2);
-	} else if (cli.flags.right) {
-		boxLength = calculateBoxLength(box, cli.flags);
-		box = indentString(box, (process.stdout.columns - boxLength));
-	}
-
-	console.log(box);
+	console.log(boxen(data, cli.flags));
 }
 
 if (input.length === 0 && process.stdin.isTTY) {

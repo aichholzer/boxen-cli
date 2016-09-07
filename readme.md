@@ -29,8 +29,7 @@ $ boxen --help
     --dim-border        Reduce opacity of border
     --padding           Space between the text and box border
     --margin            Space around the box
-    --center            Center the box
-    --right			    Align the box to the right
+    --float             Align the box on the screen [left|center|right] (Default: left)
     --align             Align the text [left|center|right] (Default: left)
 
   Examples
